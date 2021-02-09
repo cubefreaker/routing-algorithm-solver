@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Dijkstra</title>
+</head>
+<body>
+    <header>
+        <div class="title">
+            <a href="index.html">Dijkstra Solver</a>
+            <a href="./instructions.html"><img src="https://cdn4.iconfinder.com/data/icons/web-mobile1/100/Untitled-8-512.png" alt=""></a>
+        </div>
+        <div class="options">
+            <div>
+                <button class="outline-btn" id="add-edge-enable" onclick="addEdges()">Add edges </button>
+                <button class="outline-btn" id="reset-btn" onclick="reset()">Reset</button>
+            </div>
+            <div>
+                <!--<select name="algorithm" id="algorithm">
+                    <option value="short">Dijkstra</option>
+                    <option value="saw">SAW</option>
+                    <option value="ahp">AHP</option>
+                </select>-->
+                <input type="text" inputmode="numeric" id="source-node" placeholder="Source Node" />
+                <input type="text" inputmode="numeric" id="destination-node" placeholder="Destination Node" />
+                <button class="outline-btn" onclick="findShortestPath()">Run</button>
+            </div>
+        </div>
+    </header>
+    <div class="block-dijk">
+        <p class="click-instruction">Click to create node</p>
+    </div>
+    <div class="path"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./gsap.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/pathFinding.js"></script>
+    <script src="./assets/js/shortestPath.js"></script>
+    <script src="./assets/js/ahp.js"></script>
+    <script src="./assets/js/saw.js"></script>
+</body>
+</html>
