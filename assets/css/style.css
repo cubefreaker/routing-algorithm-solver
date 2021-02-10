@@ -75,13 +75,12 @@ body{
 }
 header{
     width: 100%;
-    padding:10px;
-    background-color: #69ca91;
+    padding:5px;
+    background-color: #fff;
     text-align: center;
 }
-header .title{
+.title{
     font-size: 2rem;
-    color: #FFF
 }
 header .title a:nth-child(2){
     width: 40px;
@@ -91,7 +90,7 @@ header .title a:nth-child(2){
 }
 header .title a{
     text-decoration: none;
-    color: #FFF;
+    color: #fff;
 }
 a>img{
     width: 100%;
@@ -129,7 +128,6 @@ main ul>li{
 .path::-webkit-scrollbar{
     display: none;
 }
-
 p{
     font-size: medium;
     font-weight: 700;
