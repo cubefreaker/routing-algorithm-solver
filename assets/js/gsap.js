@@ -1,5 +1,5 @@
-const header = document.querySelector('header');
-const canvas = document.querySelector('.block-dijk');
+const header = $('header');
+const canvas = $('.base-plate');
 
 
 const tl = new TimelineMax();

@@ -1,27 +1,38 @@
 // Function to find shortest path from given source to all other nodes
-let unvisited = [];
-let cost = [];
-let parent = [];
-
 const findShortestPath = () => {
     clearScreen();
     
-    let source = Number(document.getElementById('source-node').value);
-    let destination = Number(document.getElementById('destination-node').value);
+    let source = Number($('#source-node').val());
+    let destination = Number($('#destination-node').val());
 
-    if(source >= cnt || isNaN(source)){
-        alert('Invalid source');
+    if(cnt == 0){
+        Swal.fire({
+            title: 'Warning!',
+            text: 'Please create node first',
+            icon: 'warning',
+        })
+        return;
+    } else if(source >= cnt || isNaN(source)){
+        Swal.fire({
+            title: 'Warning!',
+            text: `Origin node must be a number within 0 and ${cnt-1}`,
+            icon: 'warning'
+        })
         return;
     } else if(destination >= cnt || isNaN(destination)){
-        alert('Invalid destination');
+        
+        Swal.fire({
+            title: 'Warning!',
+            text: `Destination node must be a number within 0 and ${cnt-1}`,
+            icon: 'warning'
+        })
         return;
     }
     
-    document.getElementById(source).style.backgroundColor = 'lime';
-    if(destination) document.getElementById(destination).style.backgroundColor = 'lime';
+    $(`#${source}`).css('backgroundColor', 'lime');
+    if(destination) $(`#${destination}`).css('backgroundColor', 'lime');
 
     parent[source] = -1;
-    visited = [];
     for(i=0;i<cnt;i++) unvisited.push(i);
 
     // Array containing cost of reaching i(th) node from source
@@ -31,7 +42,35 @@ const findShortestPath = () => {
     }
     cost[source] = 0;
     console.log(cost);
-    shortestPathMethod(source);
+
+    // Array which will contain final minimum cost
+    minCost[source]=0;
+
+    // Repeating until all edges are visited
+    while(unvisited.length){
+        let mini = cost.indexOf(Math.min(...cost));
+        // console.log("draw", visited[visited.length-1],mini);
+        visited.push(mini);
+        unvisited.splice(unvisited.indexOf(mini),1);
+
+        // Relaxation of unvisited edges
+        for(j of unvisited){
+            console.log(mini, j);
+            if(j===mini) continue;
+            if(cost[j] > dist[mini][j]+cost[mini]){
+                minCost[j] = dist[mini][j]+cost[mini];
+                cost[j] = dist[mini][j]+cost[mini];
+                parent[j] = mini;
+            }else{
+                minCost[j] = cost[j];
+                // parent[j] = source;
+            }
+        }
+        cost[mini]=Infinity;
+    }
+
+    console.log("Minimum Cost", minCost);
+
     for(i=0;i<cnt;i++) parent[i]===undefined ? parent[i]=source : null;
     // console.log(parent);
     indicatePath(parent, source, destination);
@@ -39,20 +78,18 @@ const findShortestPath = () => {
 
 
 const indicatePath = async (parentArr, src, dst)=>{
-    document.getElementsByClassName('path')[0].innerHTML = '';
+    $('.path').empty()
     for(i=0;i<cnt;i++){
-        if(document.getElementById('destination-node').value != ''){
+        if($('#destination-node').val() != ''){
             if(i == dst){
-                let p = document.createElement('p');
-                p.innerText = ("Node " + i + " --> " + src);
+                let p = $(document.createElement('p')).text('Node ' + i + ' --> ' + src);
                 await printPath(parentArr, i, p);
-                p.innerText = p.innerText + " " + "(Cost : " + minCost[i] + ")";
+                p.text(p.text() + ' ' + '(Cost : ' + minCost[i] + ')');
             }
         } else {
-            let p = document.createElement('p');
-            p.innerText = ("Node " + i + " --> " + src);
+            let p = $(document.createElement('p')).text('Node ' + i + ' --> ' + src);
             await printPath(parentArr, i, p);
-            p.innerText = p.innerText + " " + "(Cost : " + minCost[i] + ")";
+            p.text(p.text() + ' ' + '(Cost : ' + minCost[i] + ')');
         }
     }
 }
@@ -60,27 +97,29 @@ const indicatePath = async (parentArr, src, dst)=>{
 const printPath = async (parent, j, el_p) => {
     if(parent[j]===-1) return;
     await printPath(parent, parent[j], el_p);
-    el_p.innerText = el_p.innerText + " -> " + j;
+    el_p.text(el_p.text() + ' -> ' + j);
 
-    document.getElementsByClassName('path')[0].style.padding ='1rem';
-    document.getElementsByClassName('path')[0].appendChild(el_p);
+    $('.path').css('padding', '1rem');
+    $('.path').append(el_p);
 
     // console.log(j,parent[j]);
 
     if(j<parent[j]){
-        let tmp = document.getElementById(`line-${j}-${parent[j]}`);
+        let tmp = $(`#line-${j}-${parent[j]}`);
         await colorEdge(tmp);
     }else {
-        let tmp = document.getElementById(`line-${parent[j]}-${j}`);
+        let tmp = $(`#line-${parent[j]}-${j}`);
         await colorEdge(tmp);
     }
 }
 
 const colorEdge = async (el) => {
-    if(el.style.backgroundColor !== 'aqua'){
+    if(el.css('backgroundColor') !== 'aqua'){
         await wait(200);
-        el.style.backgroundColor = 'aqua';
-        el.style.height = '8px';
+        el.css({
+            backgroundColor: 'aqua',
+            height: '8px'
+        });
     }
 }
 
@@ -89,14 +128,13 @@ const clearScreen = ()=>{
     cost = [];
     parent = [];
     for(i=0;i<cnt;i++){
-        document.getElementById(i).style.backgroundColor = '#fff';
+        $(`${i}`).css('backgroundColor', '#fff');
     }
-    document.getElementsByClassName('path')[0].innerHTML = '';
-    let lines = document.getElementsByClassName('line');
-    for(line of lines){
-        line.style.backgroundColor = '#EEE';
-        line.style.height = '5px';
-    }
+    $('.path').empty();
+    $('.line').css({
+        backgroundColor: '#EEE',
+        height: '5px'
+    });
 }
 
 const wait = async (t)=>{

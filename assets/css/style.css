@@ -4,8 +4,9 @@
 }
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
 }
-.block-dijk{
+.base-plate{
     display: flex;
     position: absolute;
     top:0;
@@ -17,7 +18,7 @@ body{
     height: 100vh;
     z-index: -1;
 }
-.block-dijk .click-instruction{
+.base-plate .click-instruction{
     position: absolute;
     top:50%;
     left:50%;
@@ -75,7 +76,7 @@ body{
 }
 header{
     width: 100%;
-    padding:5px;
+    padding: 5px;
     background-color: #fff;
     text-align: center;
 }
@@ -90,7 +91,7 @@ header .title a:nth-child(2){
 }
 header .title a{
     text-decoration: none;
-    color: #fff;
+    color: #FFF;
 }
 a>img{
     width: 100%;
@@ -124,6 +125,8 @@ main ul>li{
     min-width: 300px;
     background-color: rgba(122, 122, 122, 0.479);
     transition-duration: 1s;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 .path::-webkit-scrollbar{
     display: none;
