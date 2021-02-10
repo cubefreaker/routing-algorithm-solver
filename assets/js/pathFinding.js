@@ -128,7 +128,7 @@ const clearScreen = ()=>{
     cost = [];
     parent = [];
     for(i=0;i<cnt;i++){
-        $(`${i}`).css('backgroundColor', '#fff');
+        $(`#${i}`).css('backgroundColor', '#fff');
     }
     $('.path').empty();
     $('.line').css({
