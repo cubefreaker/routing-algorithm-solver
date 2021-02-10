@@ -30,7 +30,6 @@ const findShortestPath = () => {
     }
     
     $(`#${source}`).css('backgroundColor', 'lime');
-    if(destination) $(`#${destination}`).css('backgroundColor', 'lime');
 
     parent[source] = -1;
     for(i=0;i<cnt;i++) unvisited.push(i);
@@ -85,6 +84,7 @@ const indicatePath = async (parentArr, src, dst)=>{
                 let p = $(document.createElement('p')).text('Node ' + i + ' --> ' + src);
                 await printPath(parentArr, i, p);
                 p.text(p.text() + ' ' + '(Cost : ' + minCost[i] + ')');
+                $(`#${dst}`).css('backgroundColor', 'lime');
             }
         } else {
             let p = $(document.createElement('p')).text('Node ' + i + ' --> ' + src);
