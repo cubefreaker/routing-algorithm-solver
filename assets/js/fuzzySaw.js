@@ -1,9 +1,10 @@
-const fuzzySaw = () => {
+const fuzzySaw = async () => {
     let source = Number($('#source-node').val())
     let destination = Number($('#destination-node').val())
 
     visited.push(source)
     let sumCriteria = {}
+    let routeNode = []
     let arrived = false
     while (!arrived) {
         if(source == destination){
@@ -24,11 +25,11 @@ const fuzzySaw = () => {
         console.log(sourceRelation)
         if(sourceRelation.length == 1){
             if (Number(sourceRelation[0]) == destination) {
-                indicatePath([], source, sourceRelation[0])
+                await indicatePath([], source, sourceRelation[0])
                 visited.push(destination)
                 arrived = true
             } else {
-                indicatePath([], source, sourceRelation[0])
+                await indicatePath([], source, sourceRelation[0])
                 source = sourceRelation[0]
                 visited.push(source)
             }
@@ -38,7 +39,7 @@ const fuzzySaw = () => {
             })
 
             result = _.maxBy(saw(candidates), 'total')
-            indicatePath([], source, result['Node'])
+            await indicatePath([], source, result['Node'])
             source = result['Node']
             visited.push(source)
             console.log(result)
@@ -53,6 +54,7 @@ const fuzzySaw = () => {
         sumCriteria[el['criteria']] = _.sumBy(routeNode, el['criteria'])
     })
     
+    // printRouteSum(routeNode, sumCriteria)
     console.log(routeNode)
     console.log(sumCriteria)
 }
@@ -95,3 +97,7 @@ const calculateRank = (candidate) => {
     }
     return result;
 }
+
+// const printRouteSum = (route, sum) => {
+
+// }

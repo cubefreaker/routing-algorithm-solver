@@ -96,7 +96,8 @@ const colorEdge = async (el) => {
 }
 
 const clearScreen = ()=>{
-    unvisited = []
+    unvisited = []    
+    visited = []
     cost = []
     parent = []
     for(i=0;i<cnt;i++){

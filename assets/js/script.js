@@ -47,7 +47,9 @@ const appendBlock = (x,y)=>{
                 icon: 'warning'
             })
             return
-        }
+        }        
+        $('#edit-weight').show()
+        $('#add-criteria').attr('disabled', true)
     }
 
     let toolTipText = ''
@@ -220,7 +222,6 @@ const reset = () => {
     unvisited = []
     cost = []
     parent = []
-    listCriteriaWeight = []
     listNodeCriteria = []
     nodeRelation = []
 
@@ -234,6 +235,9 @@ const reset = () => {
 
     $('.path').css('padding', 0).empty()
     $('.line').remove()
+    $('.click-instruction').css('display', 'block')
+    $('#edit-weight').hide()
+    $('#add-criteria').attr('disabled', false)
 }
 
 const addCriteria = () => {    
@@ -309,7 +313,7 @@ const saveImport = () => {
 
 const changeAlgo = () => {
     algoType = $('#algo-type').val()
-    algoType == 'dijkstra'? $('#edit-weight').hide() && $('#add-criteria').hide() : $('#edit-weight').show() && $('#add-criteria').show()
+    algoType == 'dijkstra'? $('#add-criteria').hide() : $('#add-criteria').show()
     reset()
 }
 
