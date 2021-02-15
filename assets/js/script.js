@@ -40,13 +40,14 @@ let arr = []
 
 const appendBlock = (x,y)=>{
     if(algoType != 'dijkstra'){
-        if(listCriteriaWeight.length == 0)
+        if(listCriteriaWeight.length == 0){
             Swal.fire({
                 title: 'Warning!',
                 text: 'Please add criteria first',
                 icon: 'warning'
             })
             return
+        }
     }
 
     let toolTipText = ''
