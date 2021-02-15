@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <title>Routing Algo</title>
 </head>
 <body>
@@ -28,10 +27,22 @@
             <div class="row"></div>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-warning" id="add-edge-enable" onclick="addEdges()">Add edges </button>
+                    <button type="button" class="btn btn-warning" id="add-edge-enable" onclick="addEdges()">Add Edge </button>
+                    <button type="button" class="btn btn-success" id="add-criteria" onclick="addCriteria()">Add Criteria </button>
                     <button type="button" class="btn btn-danger" id="reset-btn" onclick="reset()">Reset</button>
+                    <button type="button" class="btn btn-success" id="edit-weight" onclick="editWeight()">Edit Weight</button>
                 </div>
                 <div class="col">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Algo</label>
+                        </div>
+                        <select class="custom-select" id="algo-type" onchange="changeAlgo()">
+                            <option value="dijkstra">Dijkstra</option>
+                            <!--<option value="dijkstra-saw">Dijkstra-SAW</option>-->
+                            <option value="saw">SAW</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="col">
                     <div class="row">
@@ -39,7 +50,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" inputmode="numeric" id="source-node" placeholder="Origin">
                                 <input type="text" class="form-control" inputmode="numeric" id="destination-node" placeholder="Destination">
-                                <button type ="button" class="btn btn-primary float-left" onclick="findShortestPath()">Run</button>
+                                <button type ="button" class="btn btn-primary" onclick="findPath()">Run</button>
                             </div>                            
                         </div>
                     </div>
@@ -74,10 +85,83 @@
         </div>
     </div>
 
+    <!-- Criteria Modal -->
+    <div class="modal fade" id="modal-criteria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Criteria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="criteria-weight"></div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <a href="#" onclick="addCriteriaWeight()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="importCriteria()">Import</button>
+                    <button type="button" class="btn btn-sm btn-secondary me-auto" onclick="exportCriteria()">Export</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn-warning" onclick="resetCriteriaWeight()">Reset</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="saveCriteriaWeight()" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Criteria Modal -->
+    <div class="modal fade" id="modal-import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Input Criteria in JSON Format</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <textarea class="form-control" id="imported-criteria" aria-label="With textarea"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="saveImport()" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Weight Modal -->
+    <div class="modal fade" id="modal-edit-weight" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <textarea class="form-control" id="edited-weight" aria-label="With textarea"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="saveEditWeight()" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="baseplate" class="base-plate">
         <p class="click-instruction">Click to create node</p>
     </div>
     <div class="path"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -85,7 +169,7 @@
     <script src="./assets/js/gsap.js"></script>
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/pathFinding.js"></script>
-    <script src="./assets/js/ahp.js"></script>
-    <script src="./assets/js/saw.js"></script>
+    <script src="./assets/js/dijkstra.js"></script>
+    <script src="./assets/js/fuzzySaw.js"></script>
 </body>
 </html>
