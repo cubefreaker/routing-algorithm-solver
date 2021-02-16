@@ -44,6 +44,9 @@ const findPath = () => {
         case 'saw':
             fuzzySaw()
             break;
+        case 'topsis':
+            fuzzyTopsis()
+            break;
         case 'dijkstra-saw':
             dijkstraSaw()
             break;
@@ -56,7 +59,7 @@ const findPath = () => {
 const indicatePath = async (parentArr, src, dst)=>{
     $('.path').empty()
 
-    if (algoType == 'saw') {
+    if (algoType == 'saw' || algoType == 'topsis') {
         let tmp = src < dst ? $(`#line-${src}-${dst}`) : $(`#line-${dst}-${src}`)
         await colorEdge(tmp)
     } else if(algoType == 'dijkstra-saw') {

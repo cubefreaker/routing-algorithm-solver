@@ -63,9 +63,9 @@ const dijkstraSaw = () => {
 }
 
 const djkSaw = (candidates) => {
-    let minMax = djkSawGetMinMax(candidates);
-    let normalized = _.map(candidates, (el) => djkSawNormalize(el, minMax));
-    let rankResult = _.map(normalized, (el) => djkSawCalculateRank(el));
+    let minMax = djkSawGetMinMax(_.cloneDeep(candidates))
+    let normalized = _.map(_.cloneDeep(candidates), (el) => djkSawNormalize(el, _.cloneDeep(minMax)))
+    let rankResult = _.map(_.cloneDeep(normalized), (el) => djkSawCalculateRank(el))
     return rankResult
 }
 

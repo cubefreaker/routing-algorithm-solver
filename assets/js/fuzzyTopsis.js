@@ -1,4 +1,4 @@
-const fuzzySaw = async () => {
+const fuzzyTopsis = async () => {
     let source = Number($('#source-node').val())
     let destination = Number($('#destination-node').val())
 
@@ -22,7 +22,6 @@ const fuzzySaw = async () => {
                 })
             }
         })
-        
         if(sourceRelation.length == 1){
             if (Number(sourceRelation[0]) == destination) {
                 await indicatePath([], source, sourceRelation[0])
@@ -42,19 +41,20 @@ const fuzzySaw = async () => {
                 let candidates = _.map(sourceRelation, (el) => {
                     return {...listNodeCriteria[el]}
                 })
-                
+                console.log('candidates')
+                console.log(candidates)
                 result = saw(candidates)
                 resultMax = _.maxBy(result, 'total')
-
+                
                 _.map(_.cloneDeep(result), (e) => {
                     source < e['Node'] ? $(`#line-${source}-${e['Node']}`).text(Math.floor(e['total']*10000)/10000) : $(`#line-${e['Node']}-${source}`).text(Math.floor(e['total']*10000)/10000)
                 })
-
+                
                 await indicatePath([], source, resultMax['Node'])
                 source = resultMax['Node']
                 visited.push(source)
                 console.log(result)
-                if(source == destination) arrived = true                
+                if(source == destination) arrived = true
             }
         }
     }
@@ -72,60 +72,74 @@ const fuzzySaw = async () => {
     console.log(sumCriteria)
 }
 
-const saw = (candidates) => {
-    console.log('candidates')
-    console.log(candidates)
-    let minMax = getMinMax(_.cloneDeep(candidates))
-    console.log('minMax')
-    console.log(minMax)
-    let normalized = _.map(_.cloneDeep(candidates), (el) => normalize(el, _.cloneDeep(minMax)))
+const topsis = (candidates) => {
+    let normalized = tpsNormalize(_.cloneDeep(candidates))
     console.log('normalized')
     console.log(normalized)
-    let rankResult = _.map(_.cloneDeep(normalized), (el) => calculateRank(el))
+    let normalizedWeight = tpsWeightNormalize(_.cloneDeep(normalized))
+    console.log('normalizedWeight')
+    console.log(normalizedWeight)
+    let idealBestWorst = tpsIdealBestWorst(_.cloneDeep(normalizedWeight))
+    console.log('idealBestWorst')
+    console.log(idealBestWorst)
+    let distanceBestWorst = _.map(_.cloneDeep(normalizedWeight), (el) => tpsDistanceBestWorst(el, _.cloneDeep(idealBestWorst)))
+    console.log('distanceBestWorst')
+    console.log(distanceBestWorst)
+    let rankResult = _.map(_.cloneDeep(distanceBestWorst), (el) => tpsPerformanceScore(el))
     console.log('rankResult')
     console.log(rankResult)
     return rankResult
 }
 
-const getMinMax = (candidates) => {
-    let resMinMax = {}
-    _.map(listCriteriaWeight, (el) => {
-        resMinMax[el['criteria']] = el['type'] ==  'cost' ? _.minBy(candidates, el['criteria'])[el['criteria']] : _.maxBy(candidates, el['criteria'])[el['criteria']]
+const tpsNormalize = (candidate) => {
+    tmp = _.cloneDeep(candidate)
+    _.map(listCriteriaWeight, (el) => {        
+        _.map(tmp, (e) => {
+            e[el['criteria']] = e[el['criteria']] / Math.sqrt(_.sumBy(candidate, function(n) { return n[el['criteria']]**2; }))
+        })
     })
-    return resMinMax
+    return tmp;
 }
 
-const normalize = (candidate, minMax) => {
+const tpsWeightNormalize = (candidate) => {
     _.map(listCriteriaWeight, (el) => {
-        candidate[el['criteria']] = el['type'] ==  'cost' ? minMax[el['criteria']] / candidate[el['criteria']] : candidate[el['criteria']] / minMax[el['criteria']]
+        _.map(candidate, (e) => {
+            e[el['criteria']] = e[el['criteria']] * el['weight']
+        })
     })
     return candidate;
 }
 
-const calculateRank = (candidate) => {
-    let total = 0
+const tpsIdealBestWorst = (candidate) => {
+    let listBestWorst = {}
     _.map(listCriteriaWeight, (el) => {
-        total += (candidate[el['criteria']] * el['weight'])
+        bestWorst = {}
+        bestWorst['best'] = el['type'] == 'cost' ? _.minBy(candidate, el['criteria'])[el['criteria']] : _.maxBy(candidate, el['criteria'])[el['criteria']]
+        bestWorst['worst'] = el['type'] == 'cost' ? _.maxBy(candidate, el['criteria'])[el['criteria']] : _.minBy(candidate, el['criteria'])[el['criteria']]
+        listBestWorst[el['criteria']] = bestWorst
     })
+    return listBestWorst;
+}
+
+const tpsDistanceBestWorst = (candidate, bestWorst) => {
+    let bestSumPow = 0
+    let worstSumPow = 0
+    _.map(listCriteriaWeight, (el) => {
+        bestSumPow += Math.pow((candidate[el['criteria']] - bestWorst[el['criteria']]['best']), 2)
+        worstSumPow += Math.pow((candidate[el['criteria']] - bestWorst[el['criteria']]['worst']), 2)
+    })
+    candidate['siPositive'] = Math.sqrt(bestSumPow)
+    candidate['siNegative'] = Math.sqrt(worstSumPow)
+    return candidate;
+}
+
+
+const tpsPerformanceScore = (candidate) => {
+    let total = (candidate['siNegative'] / (candidate['siNegative']+candidate['siPositive']))
 
     const result = {
         Node: candidate.Node,
         total: total
     }
     return result;
-}
-
-const printRouteSum = (routeNode, sumCriteria) => {
-    let p = $(document.createElement('p'))
-    p.append('ROUTE :<br>')
-    _.map(routeNode, (el) => {
-        p.append(`> Node ${el['Node']}<br>`)
-    })
-    
-    p.append('<br>TOTAL :<br>')
-    _.map(sumCriteria, (el, i) => {
-        p.append(`> ${i}: ${el}<br>`)
-    })
-    $('.path').css('padding', '1rem')
-    $('.path').append(p)
 }
