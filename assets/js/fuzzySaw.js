@@ -34,16 +34,22 @@ const fuzzySaw = async () => {
                 visited.push(source)
             }
         } else {
-            let candidates = _.map(sourceRelation, (el) => {
-                return {...listNodeCriteria[el]}
-            })
-
-            result = _.maxBy(saw(candidates), 'total')
-            await indicatePath([], source, result['Node'])
-            source = result['Node']
-            visited.push(source)
-            console.log(result)
-            if(source == destination) arrived = true
+            if (sourceRelation.includes(destination)) {
+                await indicatePath([], source, destination)
+                visited.push(destination)
+                arrived = true
+            } else {
+                let candidates = _.map(sourceRelation, (el) => {
+                    return {...listNodeCriteria[el]}
+                })
+    
+                result = _.maxBy(saw(candidates), 'total')
+                await indicatePath([], source, result['Node'])
+                source = result['Node']
+                visited.push(source)
+                console.log(result)
+                if(source == destination) arrived = true                
+            }
         }
     }
 
@@ -61,27 +67,23 @@ const fuzzySaw = async () => {
 }
 
 const saw = (candidates) => {
-    // console.log(candidates)
-    const minMax = getMinMax(candidates);
-    // console.log(minMax)
-    const normalized = _.map(candidates, (el) => normalize(el, minMax));
-    // console.log(normalized)
-    const rankResult = _.map(normalized, (el) => calculateRank(el));
-    console.log(rankResult)
+    let minMax = getMinMax(candidates);
+    let normalized = _.map(candidates, (el) => normalize(el, minMax));
+    let rankResult = _.map(normalized, (el) => calculateRank(el));
     return rankResult
 }
 
 const getMinMax = (candidates) => {
     let resMinMax = {}
     _.map(listCriteriaWeight, (el) => {
-        resMinMax[el['criteria']] = _.minBy(candidates, el['criteria'])[el['criteria']]
+        resMinMax[el['criteria']] = el['type'] ==  'cost' ? _.minBy(candidates, el['criteria'])[el['criteria']] : _.maxBy(candidates, el['criteria'])[el['criteria']]
     })
     return resMinMax
 }
 
 const normalize = (candidate, minMax) => {
     _.map(listCriteriaWeight, (el) => {
-        candidate[el['criteria']] = minMax[el['criteria']] / candidate[el['criteria']]
+        candidate[el['criteria']] = el['type'] ==  'cost' ? minMax[el['criteria']] / candidate[el['criteria']] : candidate[el['criteria']] / minMax[el['criteria']]
     })
     return candidate;
 }

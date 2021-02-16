@@ -1,7 +1,16 @@
 // Function to find shortest path from given source to all other nodes
 const findPath = () => {
     clearScreen()
-    
+
+    if (algoType != 'dijkstra' && $('#destination-node').val() == '') {
+        Swal.fire({
+            title: 'Warning!',
+            text: 'Please input destination',
+            icon: 'warning',
+        })
+        return
+    }
+
     let source = Number($('#source-node').val())
     let destination = Number($('#destination-node').val())
 
@@ -35,7 +44,9 @@ const findPath = () => {
         case 'saw':
             fuzzySaw()
             break;
-
+        case 'dijkstra-saw':
+            dijkstraSaw()
+            break;
         default:
             dijsktra()
             break;
@@ -48,6 +59,14 @@ const indicatePath = async (parentArr, src, dst)=>{
     if (algoType == 'saw') {
         let tmp = src < dst ? $(`#line-${src}-${dst}`) : $(`#line-${dst}-${src}`)
         await colorEdge(tmp)
+    } else if(algoType == 'dijkstra-saw') {
+        for(i=0;i<cnt;i++){
+            if(i == dst){
+                let tes = [...parentArr]
+                console.log(tes)
+                await printPath(parentArr, i, '')
+            }
+        }
     } else {
         for(i=0;i<cnt;i++){
             if($('#destination-node').val() != ''){
@@ -67,12 +86,33 @@ const indicatePath = async (parentArr, src, dst)=>{
 }
 
 const printPath = async (parent, j, el_p) => {
-    if(parent[j]===-1) return
-    await printPath(parent, parent[j], el_p)
-    el_p.text(el_p.text() + ' -> ' + j)
+    if(algoType == 'dijkstra-saw'){
+        if(parent[j]===-1){
+            routeNode = _.map(_.reverse(visited), (el) => {
+                return {...listNodeCriteria[Number(el)]}
+            })
 
-    $('.path').css('padding', '1rem')
-    $('.path').append(el_p)
+            let sumCriteria = {}
+            _.map(listCriteriaWeight, (el) => {
+                sumCriteria[el['criteria']] = _.sumBy(routeNode, el['criteria'])
+            })
+
+            console.log(visited)
+            printRouteSum(routeNode, sumCriteria)
+            console.log(routeNode)
+            console.log(sumCriteria)
+            return
+        }        
+        visited.push(j)
+        await printPath(parent, parent[j], el_p)
+    } else {
+        if(parent[j]===-1) return
+        await printPath(parent, parent[j], el_p)
+        el_p.text(el_p.text() + ' -> ' + j)
+
+        $('.path').css('padding', '1rem')
+        $('.path').append(el_p)
+    }
 
     // console.log(j,parent[j])
 

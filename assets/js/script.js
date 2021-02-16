@@ -2,7 +2,7 @@
 let blocks = $('.base-plate')
 let addEdge = false
 let cnt = 0
-let algoType = 'dijkstra'
+let algoType = 'dijkstra'  
 
 //for dijsktra
 let dist = []
@@ -57,7 +57,7 @@ const appendBlock = (x,y)=>{
     _.map(listCriteriaWeight, (e) => {
         let randNum = Math.floor((Math.random() * 100)+1)
         nodeCriteria[e['criteria']] = randNum
-        toolTipText += `${e['criteria']} : ${randNum}, `
+        toolTipText += `${e['criteria']} : ${randNum}<br>`
     })
     listNodeCriteria.push(nodeCriteria)
 
@@ -97,6 +97,7 @@ const appendBlock = (x,y)=>{
                     })
 
     blocks.append(block)
+    $('[data-bs-toggle="tooltip"]').tooltip();
 }
 
 // It is called when user starts adding edges by clicking on button given
@@ -245,18 +246,18 @@ const addCriteria = () => {
 
     if(listCriteriaWeight.length > 0){        
         _.map(listCriteriaWeight, (el) => {
-            addCriteriaWeight(el.criteria, el.weight)
+            addCriteriaWeight(el.criteria, el.weight, el.type)
         })
     }
 
     $('#modal-criteria').modal('show')
 }
 
-const addCriteriaWeight = (crt = '', wght = '') => {
+const addCriteriaWeight = (crt = '', wght = '', type = '') => {
     let critCount = $('.list-criteria').length + 1
     let data = `
         <div class="row">
-            <div class="col">
+            <div class="col-6">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon3">Criteria</span>
                     <input type="text" class="form-control list-criteria" id="criteria-${critCount}" aria-describedby="basic-addon3">
@@ -268,12 +269,22 @@ const addCriteriaWeight = (crt = '', wght = '') => {
                     <input type="text" inputmode="numeric" class="form-control list-weight" id="weight-${critCount}" aria-describedby="basic-addon3">
                 </div>
             </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Type</span>
+                    <select class="form-select list-type" id="type-${critCount}">
+                        <option value="cost">Cost</option>
+                        <option value="benefit">Benefit</option>
+                    </select>
+                </div>
+            </div>
         </div>
     `
     $('.criteria-weight').append(data)
 
     $(`#criteria-${critCount}`).val(crt)
     $(`#weight-${critCount}`).val(wght)
+    $(`#type-${critCount}`).val(type)
 }
 
 const saveCriteriaWeight = () => {
@@ -282,7 +293,8 @@ const saveCriteriaWeight = () => {
         _.map($('.list-criteria'), (e, i) => {
             listCriteriaWeightTemp.push({
                 criteria: $(`#criteria-${i+1}`).val(),
-                weight: $(`#weight-${i+1}`).val()
+                weight: $(`#weight-${i+1}`).val(),
+                type: $(`#type-${i+1}`).val()
             })
         })
         if(listCriteriaWeightTemp != listCriteriaWeight) listCriteriaWeight = listCriteriaWeightTemp
@@ -327,11 +339,12 @@ const saveEditWeight = () => {
         listNodeCriteria = JSON.parse($('#edited-weight').val())
         for (i=0;i<cnt;i++) {
             let toolTipText = ''
-            _.map(listNodeCriteria[i], (el, i) => {
-                toolTipText += `${i} : ${el}, `
+            _.map(listNodeCriteria[i], (el, j) => {
+                if(j != 'Node') toolTipText += `${j} : ${el}<br>`
             })
 
-            $(`#${i}`).attr('title', toolTipText)
+            $(`#${i}`).attr('data-bs-original-title', toolTipText)
+            $('[data-bs-toggle="tooltip"]').tooltip();
             
         }
     }
