@@ -42,12 +42,15 @@ const findPath = () => {
 
     switch (algoType) {
         case 'saw':
+            $('.line').text('')
             fuzzySaw()
             break;
         case 'topsis':
+            $('.line').text('')
             fuzzyTopsis()
             break;
         case 'dijkstra-saw':
+            $('.line').text('')
             dijkstraSaw()
             break;
         default:
