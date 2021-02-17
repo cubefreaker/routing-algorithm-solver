@@ -68,6 +68,7 @@ const indicatePath = async (parentArr, src, dst)=>{
                 let tes = [...parentArr]
                 console.log(tes)
                 await printPath(parentArr, i, '')
+                $(`#${dst}`).css('backgroundColor', 'lime')
             }
         }
     } else {

@@ -26,7 +26,8 @@ const fuzzySaw = async () => {
         if(sourceRelation.length == 1){
             if (Number(sourceRelation[0]) == destination) {
                 await indicatePath([], source, sourceRelation[0])
-                visited.push(destination)
+                visited.push(destination)                
+                $(`#${destination}`).css('backgroundColor', 'lime')
                 arrived = true
             } else {
                 await indicatePath([], source, sourceRelation[0])
@@ -37,6 +38,7 @@ const fuzzySaw = async () => {
             if (sourceRelation.includes(destination)) {
                 await indicatePath([], source, destination)
                 visited.push(destination)
+                $(`#${destination}`).css('backgroundColor', 'lime')
                 arrived = true
             } else {
                 let candidates = _.map(sourceRelation, (el) => {
