@@ -46,6 +46,7 @@ const appendBlock = (x,y)=>{
                 text: 'Please add criteria first',
                 icon: 'warning'
             })
+            cnt = 0
             return
         }        
         $('#edit-weight').show()
@@ -228,7 +229,7 @@ const reset = () => {
 
     for(i=0;i<cnt;i++){
         $(`#${i}`).remove()
-    }    
+    }
     cnt = 0
 
     addEdge = false
@@ -348,4 +349,37 @@ const saveEditWeight = () => {
             
         }
     }
+}
+
+const clickImportNode = () => {
+    $('#modal-import-node').modal('show')
+}
+
+const saveImportNode = () => {
+    for(i=0;i<cnt;i++){
+        $(`#${i}`).remove()
+    }
+    cnt = 0
+
+    if($('#import-node').val() != '') nodes = JSON.parse($('#import-node').val())
+    _.each(nodes, (el) => {
+        cnt = el['Node']
+        appendBlock(el['x'],el['y'])
+    })
+}
+
+const exportNode = () => {
+    let nodes = []
+    for (i=0;i<cnt;i++) {
+        tmp = {}
+        tmp['Node'] = i
+        tmp['x'] = $(`#${i}`).css('left').slice(0, -2)
+        tmp['y'] = $(`#${i}`).css('top').slice(0, -2)
+        nodes.push(tmp)
+    }
+    
+    let x = window.open()
+    x.document.open()
+    x.document.write('<html><body><pre>' + JSON.stringify(nodes, null, 2) + '</pre></body></html>')
+    x.document.close()
 }

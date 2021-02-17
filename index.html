@@ -23,37 +23,50 @@
                         </svg>
                     </a>-->
                 </div>
-            </div>            
-            <div class="row"></div>
+            </div>
             <div class="row">
-                <div class="col">
-                    <button type="button" class="btn btn-warning" id="add-edge-enable" onclick="addEdges()">Add Edge </button>
-                    <button type="button" class="btn btn-success" id="add-criteria" onclick="addCriteria()">Add Criteria </button>
-                    <button type="button" class="btn btn-danger" id="reset-btn" onclick="reset()">Reset</button>
-                    <button type="button" class="btn btn-success" id="edit-weight" onclick="editWeight()">Edit Weight</button>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text">Algo</label>
+                <div class="col-5">
+                    <div class="row justify-content-start">
+                        <div class="input-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-warning rounded ms-4" id="add-edge-enable" onclick="addEdges()">Add Edge </button>
+                                <button type="button" class="btn btn-success rounded ms-1" id="add-criteria" onclick="addCriteria()">Add Criteria </button>
+                                <button type="button" class="btn btn-danger rounded ms-1" id="reset-btn" onclick="reset()">Reset</button>
+                                <button type="button" class="btn btn-success rounded ms-1" id="edit-weight" onclick="editWeight()">Edit Weight</button>
+                            </div>
                         </div>
-                        <select class="custom-select" id="algo-type" onchange="changeAlgo()">
-                            <option value="dijkstra">Dijkstra</option>
-                            <option value="dijkstra-saw">Dijkstra-SAW</option>
-                            <option value="saw">SAW</option>
-                            <option value="topsis">TOPSIS</option>
-                        </select>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="row">
-                        <div class="col-8">
+                <div class="col-2">
+                    <div class="row justify-content-center">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Algo</label>
+                            </div>
+                            <select class="custom-select" id="algo-type" onchange="changeAlgo()">
+                                <option value="dijkstra">Dijkstra</option>
+                                <option value="dijkstra-saw">Dijkstra-SAW</option>
+                                <option value="saw">SAW</option>
+                                <option value="topsis">TOPSIS</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row justify-content-end">
+                        <div class="col-9">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" inputmode="numeric" id="source-node" placeholder="Origin">
                                 <input type="text" class="form-control" inputmode="numeric" id="destination-node" placeholder="Destination">
                                 <button type ="button" class="btn btn-primary" onclick="findPath()">Run</button>
-                            </div>                            
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="btn-group">
+                        <button type ="button" class="btn btn-secondary rounded ms-1" onclick="clickImportNode()">Import</button>
+                        <button type ="button" class="btn btn-secondary rounded ms-1" onclick="exportNode()">Export</button>
                     </div>
                 </div>
             </div>
@@ -81,6 +94,26 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Nodes Modal -->
+    <div class="modal fade" id="modal-import-node" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Input Nodes in JSON Format</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <textarea class="form-control" id="import-node" aria-label="With textarea"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="saveImportNode()" data-bs-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>

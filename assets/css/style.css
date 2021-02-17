@@ -81,8 +81,10 @@ header{
     text-align: center;
 }
 .title{
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 15px;
 }
 header .title a:nth-child(2){
     width: 40px;
@@ -137,6 +139,6 @@ p{
     font-weight: 700;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-#imported-criteria, #edited-weight{
+#imported-criteria, #edited-weight, #import-node{
     height: 300px;
 }
