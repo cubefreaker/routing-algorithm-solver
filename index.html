@@ -16,12 +16,12 @@
             <div class="row">
                 <div class="col title">
                     <a href="index.html">Routing Algorithm Solver</a>
-                    <!--<a href="" data-bs-toggle="modal" data-bs-target="#instruction">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#instruction">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                         </svg>
-                    </a>-->
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -72,32 +72,6 @@
             </div>
         </div>
     </header>
-
-    <!-- Instruction Modal -->
-    <div class="modal fade" id="instruction" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <main>
-                        <h3>Instructions</h3>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Click anywhere on the screen to create a node.</li>
-                            <li class="list-group-item">After you finished adding nodes, start adding edges.</li>
-                            <li class="list-group-item">Click button "Add edges" before adding edges.</li>
-                            <li class="list-group-item">Edges can be added by clicking one node and then other node.</li>
-                            <li class="list-group-item">All edges have default weight scaled to the size/distance between them (in pixel).</li>
-                            <li class="list-group-item">You can click on the existing weight and change it according to the need.</li>
-                            <li class="list-group-item">Enter the origin and the destination vertex in input box (optional) and then click "Run" to find minimum cost path.</li>
-                            <li class="list-group-item">Before clicking run, make sure all weights are as you need them to be.</li>
-                        </ul>
-                    </main>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Import Nodes Modal -->
     <div class="modal fade" id="modal-import-node" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -186,6 +160,45 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-primary" onclick="saveEditWeight()" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instruction Modal -->
+    <div class="modal fade" id="instruction" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Instructions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <main>
+                        <h6>For Dijkstra</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Click 'Add Criteria' button to add criterias</li>
+                            <li class="list-group-item">Click anywhere on the screen to create a node</li>
+                            <li class="list-group-item">Node can also be imported or exported by button on the top right</li>
+                            <li class="list-group-item">After you finished adding nodes, start adding edges</li>
+                            <li class="list-group-item">Click button "Add edges" before adding edges</li>
+                            <li class="list-group-item">Edges can be added by clicking one node and then other node</li>
+                            <li class="list-group-item">All edges have default weight scaled to the size/distance between them (in pixel)</li>
+                            <li class="list-group-item">You can click on the existing weight and change it according to the need</li>
+                            <li class="list-group-item">Enter the origin and the destination vertex in input box (optional) and then click "Run" to find minimum cost path</li>
+                            <li class="list-group-item">Before clicking run, make sure all weights are as you need them to be</li>
+                        </ul>
+                        <hr>
+                        <h6>*Addition for SAW, TOPSIS, and Dijkstra-SAW</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Before creating node, make sure you add criteria by clicking 'Add Criteria' button</li>
+                            <li class="list-group-item">Criteria can be exported or imported in JSON formatted data</li>
+                            <li class="list-group-item">After creating node, you can adjust criterias value for each node by clicking 'Edit Weight' button</li>
+                        </ul>
+                    </main>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

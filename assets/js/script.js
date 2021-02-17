@@ -19,11 +19,11 @@ let nodeRelation = []
 $('#edit-weight').hide()
 $('#add-criteria').hide()
 
-//let alerted = localStorage.getItem('alerted') || ''
-//if (alerted !== 'yes') {
-//    alert("Read instructions before proceeding by clicking i-icon in the top-right corner")
-//    localStorage.setItem('alerted','yes')
-//}
+let alerted = localStorage.getItem('alerted') || ''
+if (alerted !== 'yes') {
+   alert("Read instructions before proceeding by clicking i-icon in the top-right corner")
+   localStorage.setItem('alerted','yes')
+}
 
 // Allow creating nodes on screen by clicking
 blocks.click((e)=>{
