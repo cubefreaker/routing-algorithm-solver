@@ -325,9 +325,9 @@ const saveImport = () => {
 }
 
 const changeAlgo = () => {
+    if((algoType == 'dijkstra' && $('#algo-type').val() != 'dijkstra') || (algoType != 'dijkstra' && $('#algo-type').val() == 'dijkstra')) reset()
     algoType = $('#algo-type').val()
     algoType == 'dijkstra'? $('#add-criteria').hide() : $('#add-criteria').show()
-    reset()
 }
 
 const editWeight = () => {
