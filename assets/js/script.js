@@ -70,7 +70,7 @@ const appendBlock = (x,y)=>{
                 randNum = Math.floor((Math.random() * 1000)+1)
                 break;
         
-            case 'Latency':
+            case 'Jitter':
                 randNum = Math.floor((Math.random() * 20)+1)
                 break;
         
