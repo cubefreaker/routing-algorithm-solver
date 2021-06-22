@@ -66,7 +66,7 @@ const appendBlock = (x,y)=>{
                 randNum = Math.floor((Math.random() * 10)+1)
                 break;
         
-            case 'Bandwith':
+            case 'Throughput':
                 randNum = Math.floor((Math.random() * 1000)+1)
                 break;
         
