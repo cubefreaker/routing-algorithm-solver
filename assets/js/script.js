@@ -56,7 +56,29 @@ const appendBlock = (x,y)=>{
     let toolTipText = ''
     let nodeCriteria = {Node: cnt}
     _.map(listCriteriaWeight, (e) => {
-        let randNum = Math.floor((Math.random() * 100)+1)
+        let randNum = 0
+        switch (e['criteria']) {
+            case 'Delay':
+                randNum = Math.floor((Math.random() * 30)+1)
+                break;
+        
+            case 'Loss':
+                randNum = Math.floor((Math.random() * 10)+1)
+                break;
+        
+            case 'Bandwith':
+                randNum = Math.floor((Math.random() * 1000)+1)
+                break;
+        
+            case 'Latency':
+                randNum = Math.floor((Math.random() * 20)+1)
+                break;
+        
+            default:
+                randNum = Math.floor((Math.random() * 100)+1)
+                break;
+        }
+        
         nodeCriteria[e['criteria']] = randNum
         toolTipText += `${e['criteria']} : ${randNum}<br>`
     })
